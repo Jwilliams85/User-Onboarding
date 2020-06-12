@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import * as yup from "yup"; // DOCS: https://github.com/jquense/yup
 import axios from "axios";
+import formStyle from "./Form.css"
 
 export default function Form() {
   // can declare initialState once and use as initial state for form, for errors, and reset form
@@ -36,6 +37,7 @@ export default function Form() {
       .required(),
     terms: yup.boolean().oneOf([true], "please agree with us"),
     positions: yup.string().required("Must choose a position"),
+    terms: yup.string().required("must say why"),
     password: yup.string().required("must say why")
   });
 
@@ -103,14 +105,14 @@ export default function Form() {
     validateChange(e); // for each change in input, do inline validation
     setFormState(newFormData); // update state with new data
   };
-
+//you need to have labels or placeholder
   return (
     <form onSubmit={formSubmit}>
       {serverError ? <p className="error">{serverError}</p> : null}
-      <label htmlFor="name">
-        Name
+      <label htmlFor="name" className="name">
+        Name {""}
         <input
-          id="name"
+          id="name" //it is important to have an id that matches htmlFor
           type="text"
           name="name"
           onChange={inputChange}
@@ -120,8 +122,10 @@ export default function Form() {
         />
         {errors.name.length > 0 ? <p className="error">{errors.name}</p> : null}
       </label>
-      <label htmlFor="email">
-        Email
+      <br></br>
+      <br></br>
+      <label htmlFor="email" className="email">
+        Email {""}
         <input
           type="text"
           name="email"
@@ -133,8 +137,12 @@ export default function Form() {
           <p className="error">{errors.email}</p>
         ) : null}
       </label>
-      <label htmlFor="password">
-        Password
+<br></br>
+<br></br>
+      {/* Use textarea to get a textbox that expands. Like <label htmlFor = "motivation"> why would you like to help? <textarea id="motivation" name="motivation"/> </label> */}
+
+      <label htmlFor="password" className="password">
+        Password {""}
         <input
           name="password"
           onChange={inputChange}
@@ -145,9 +153,10 @@ export default function Form() {
           <p className="error">{errors.password}</p>
         ) : null}
       </label>
-
-      <label htmlFor="positions">
-        What would your role be?
+<br></br>
+<br></br>
+      <label htmlFor="positions" className="position">
+        What would your role be? {""}
         <select id="positions" name="positions" onChange={inputChange}>
           <option value="">--Please choose an option--</option>
           <option value="UX-Designer">UX-Designer</option>
@@ -161,23 +170,24 @@ export default function Form() {
           <p className="error">{errors.positions}</p>
         ) : null}
       </label>
-
-      <label htmlFor="terms" className="terms">
+<br></br>
+<br></br>
+<label htmlFor="terms" className="terms">
+  Terms and Conditions
         <input
           type="checkbox"
           name="terms"
-          checked={formState.terms}
+          checked={formState.options}
           onChange={inputChange}
         />
-        Terms & Conditions
-        {/* {errors.terms.length > 0 ? (
-          <p className="error">{errors.terms}</p>
-        ) : null} */}
       </label>
+      <br></br>
+      <br></br>
       <pre>{JSON.stringify(post, null, 2)}</pre>
       <button disabled={isButtonDisabled} type="submit">
         Submit
       </button>
+
     </form>
   );
 }
